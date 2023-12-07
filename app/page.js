@@ -8,6 +8,8 @@ const page = () => {
 
   const [tasks, setTasks] = useState([]);
 
+  const [isEditItem, setIsEditItem] = useState(null);
+
   const submitList = (e) => {
     e.preventDefault();
 
@@ -20,6 +22,25 @@ const page = () => {
     setDesc("");
   };
 
+  const deleteTask = (i) => {
+    const taskDelete = tasks.filter((t) => {
+      t.i != i
+    })
+
+    setTasks(taskDelete);
+  }
+
+  const editItem = (i) => {
+    const newTask = tasks.find((t) => {
+      return t.i === i
+    })
+
+    setTitle(newTask.title);
+    setDesc(newTask.desc);
+
+    setIsEditItem(i)
+  }
+
   let renderTask = <h1>No task are available</h1>;
 
   if (tasks.length > 0) {
@@ -30,7 +51,12 @@ const page = () => {
             <h5 className="text-2xl font-semibold">{t.title}</h5>
             <h6 className="text-xl">{t.desc}</h6>
           </div>
-          <button className="bg-red-800 text-white px-6 py-4">Delete</button>
+          <button onClick={() => {
+            deleteTask(i)
+          }} className="bg-red-800 text-white px-6 py-4">Delete</button>
+          <button onClick={() => {
+            editItem(i)
+          }} className="bg-green-800 text-white px-6 py-4">Edit</button>
         </li>
       );
     });
